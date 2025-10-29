@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Только для Тебя 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            cursor: crosshair;
+            height: 100vh;
+        }
+
+        /* Вселенная */
+        #universe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: nebulaFloat 40s infinite linear;
+        }
+
+        /* Главный контент */
+        .eternal-garden {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .main-portal {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #ff0066, #6600ff, #00ccff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: portalSpin 8s linear infinite, portalGlow 3s ease-in-out infinite alternate;
+            cursor: pointer;
+            box-shadow: 0 0 100px #ff0066;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .portal-text {
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
+
+        /* Плавающие острова с сюрпризами */
+        .magic-island {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255, 107, 139, 0.9), rgba(106, 90, 249, 0.9));
+            border-radius: 25px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+            max-width: 250px;
+            animation: islandFloat 6s ease-in-out infinite;
+        }
+
+        .magic-island:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 30px 70px rgba(255, 107, 139, 0.4);
+        }
+
+        /* Секретные комнаты */
+        .secret-room {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(20px);
+        }
+
+        .room-content {
+            background: linear-gradient(135deg, rgba(255, 107, 139, 0.1), rgba(106, 90, 249, 0.1));
+            padding: 3rem;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            text-align: center;
+            backdrop-filter: blur(25px);
+        }
+
+        .room-title {
+            color: #ff6b8b;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 30px #ff0066;
+        }
+
+        .room-text {
+            color: white;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .close-room {
+            background: linear-gradient(45deg, #ff6b8b, #6a5af9);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-room:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 107, 139, 0.5);
+        }
+
+        /* Анимированные элементы */
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: none;
+            animation: heartFloat 8s linear forwards;
+            z-index: -1;
+        }
+
+        .crystal {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation: crystalSpin 4s linear infinite;
+            opacity: 0.7;
+        }
+
+        /* Анимации */
+        @keyframes portalSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes portalGlow {
+            0% { box-shadow: 0 0 80px #ff0066; }
+            100% { box-shadow: 0 0 120px #00ccff; }
+        }
+
+        @keyframes islandFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes heartFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg) scale(2);
+            }
+        }
+
+        @keyframes crystalSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.3); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes nebulaFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 100px) rotate(360deg); }
+        }
+
+        /* Музыкальный контрол */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            z-index: 3000;
+        }
+
+        .music-icon {
+            font-size: 2rem;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Вселенная -->
+    <div id="universe"></div>
+
+    <!-- Вечный сад -->
+    <div class="eternal-garden">
+        <!-- Главный портал -->
+        <div class="main-portal" onclick="openRoom('welcome')">
+            <div class="portal-text">Открой Сердце<br>Вселенной 💫</div>
+        </div>
+
+        <!-- Плавающие острова -->
+        <div class="magic-island" style="top: 20%; left: 10%;" onclick="openRoom('memories')">
+            🌸 Тайные Воспоминания
+        </div>
+        <div class="magic-island" style="top: 15%; right: 15%;" onclick="openRoom('dreams')">
+            ✨ Наши Мечты
+        </div>
+        <div class="magic-island" style="bottom: 20%; left: 20%;" onclick="openRoom('promises')">
+            💞 Вечные Обещания
+        </div>
+        <div class="magic-island" style="bottom: 15%; right: 10%;" onclick="openRoom('future')">
+            🚀 Наше Будущее
+        </div>
+        <div class="magic-island" style="top: 50%; left: 5%;" onclick="openRoom('secrets')">
+            🔮 Только Для Нас
+        </div>
+        <div class="magic-island" style="top: 45%; right: 5%;" onclick="openRoom('angel')">
+            👼 Ангел Моей Души
+        </div>
+    </div>
+
+    <!-- Секретные комнаты -->
+    <div id="welcome" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Добро пожаловать в Нашу Вселенную 🌌</h2>
+            <p class="room-text">
+                Это место создано только для тебя. Здесь живут наши самые сокровенные моменты, 
+                мечты и обещания. Каждый остров хранит частичку нашей истории...
+            </p>
+            <button class="close-room" onclick="closeRoom('welcome')">Исследовать Вселенную 🚀</button>
+        </div>
+    </div>
+
+    <div id="memories" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Наши Воспоминания 🌸</h2>
+            <p class="room-text">
+                Помнишь тот день, когда мы впервые встретились? Как будто вселенная специально 
+                свела нас вместе. Каждая наша улыбка, каждый взгляд - это бесценные сокровища, 
+                которые я храню в своем сердце...
+            </p>
+            <button class="close-room" onclick="closeRoom('memories')">Вернуться к Звездам ✨</button>
+        </div>
+    </div>
+
+    <div id="dreams" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Наши Общие Мечты ✨</h2>
+            <p class="room-text">
+                Я мечтаю о каждом новом дне с тобой. О путешествиях, которые мы совершим, 
+                о моментах, которые переживем вместе. С тобой даже самые смелые мечты кажутся 
+                достижимыми...
+            </p>
+            <button class="close-room" onclick="closeRoom('dreams')">Продолжить Мечтать 🌙</button>
+        </div>
+    </div>
+
+    <div id="promises" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Мои Обещания Тебе 💞</h2>
+            <p class="room-text">
+                Я обещаю всегда быть рядом, в радости и в печали. Обещаю беречь твое сердце 
+                как самое дорогое сокровище. Обещаю делать все, чтобы ты просыпалась с улыбкой 
+                и засыпала с ощущением счастья...
+            </p>
+            <button class="close-room" onclick="closeRoom('promises')">Принять Обещания 🤝</button>
+        </div>
+    </div>
+
+    <div id="future" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Наше Сияющее Будущее 🚀</h2>
+            <p class="room-text">
+                Впереди нас ждет столько всего удивительного! Новые горизонты, новые достижения, 
+                новые моменты счастья. С тобой я готов покорять любые вершины...
+            </p>
+            <button class="close-room" onclick="closeRoom('future')">Вперед к Приключениям! 🌠</button>
+        </div>
+    </div>
+
+    <div id="secrets" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Тайна, Знающая Только Нас Двоих 🔮</h2>
+            <p class="room-text">
+                Есть чувства, которые словами не передать. Есть моменты, которые понимаем только мы. 
+                Эта связь между нами - самая настоящая магия, которую я буду беречь всю жизнь...
+            </p>
+            <button class="close-room" onclick="closeRoom('secrets')">Хранить Тайну 🤫</button>
+        </div>
+    </div>
+
+    <div id="angel" class="secret-room">
+        <div class="room-content">
+            <h2 class="room-title">Ты - Ангел Моей Души 👼</h2>
+            <p class="room-text">
+                Иногда я просыпаюсь и не могу поверить, что ты существуешь. Ты как ангел, 
+                сошедший с небес, чтобы сделать мою жизнь прекрасной. Твоя доброта, твоя улыбка, 
+                твоя душа - это самый драгоценный дар во всей вселенной...
+            </p>
+            <button class="close-room" onclick="createHeavenlyEffect()">Ты - Чудо 🌟</button>
+        </div>
+    </div>
+
+    <!-- Музыкальный контрол -->
+    <div class="music-control" onclick="toggleMusic()">
+        <div class="music-icon">🎵</div>
+    </div>
+
+    <!-- Аудио -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-driving-ambition-32.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Создаем вселенную
+        function createUniverse() {
+            const universe = document.getElementById('universe');
+            
+            // Звезды
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+                universe.appendChild(star);
+            }
+            
+            // Туманности
+            for (let i = 0; i < 5; i++) {
+                const nebula = document.createElement('div');
+                nebula.className = 'nebula';
+                nebula.style.width = Math.random() * 400 + 200 + 'px';
+                nebula.style.height = nebula.style.width;
+                nebula.style.left = Math.random() * 100 + '%';
+                nebula.style.top = Math.random() * 100 + '%';
+                nebula.style.background = `radial-gradient(circle, 
+                    rgba(${Math.random() * 255}, ${Math.random() * 255}, 255, 0.3),
+                    transparent 70%)`;
+                nebula.style.animationDelay = Math.random() * 40 + 's';
+                universe.appendChild(nebula);
+            }
+        }
+
+        // Плавающие сердечки
+        function createFloatingHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
+                heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 8000);
+            }, 500);
+        }
+
+        // Кристаллы
+        function createCrystals() {
+            for (let i = 0; i < 20; i++) {
+                const crystal = document.createElement('div');
+                crystal.className = 'crystal';
+                crystal.style.left = Math.random() * 100 + '%';
+                crystal.style.top = Math.random() * 100 + '%';
+                crystal.style.animationDelay = Math.random() * 4 + 's';
+                document.body.appendChild(crystal);
+            }
+        }
+
+        // Управление комнатами
+        function openRoom(roomId) {
+            document.getElementById(roomId).style.display = 'flex';
+            createHeartsExplosion();
+        }
+
+        function closeRoom(roomId) {
+            document.getElementById(roomId).style.display = 'none';
+            createSparkleEffect();
+        }
+
+        // Эффекты
+        function createHeartsExplosion() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.innerHTML = '💖';
+                    heart.style.left = '50%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = '30px';
+                    heart.style.animation = 'heartFloat 3s ease-out forwards';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        function createSparkleEffect() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.style.position = 'fixed';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparkle.style.width = '10px';
+                    sparkle.style.height = '10px';
+                    sparkle.style.background = 'gold';
+                    sparkle.style.borderRadius = '50%';
+                    sparkle.style.animation = 'sparkle 1s ease-out forwards';
+                    sparkle.style.boxShadow = '0 0 20px yellow';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        function createHeavenlyEffect() {
+            // Создаем небесный эффект
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const angel = document.createElement('div');
+                    angel.innerHTML = '👼';
+                    angel.style.position = 'fixed';
+                    angel.style.left = Math.random() * 100 + '%';
+                    angel.style.top = Math.random() * 100 + '%';
+                    angel.style.fontSize = '40px';
+                    angel.style.animation = 'heartFloat 5s ease-out forwards';
+                    angel.style.zIndex = '1000';
+                    document.body.appendChild(angel);
+                    
+                    setTimeout(() => angel.remove(), 5000);
+                }, i * 100);
+            }
+            closeRoom('angel');
+        }
+
+        // Музыка
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const icon = document.querySelector('.music-icon');
+            
+            if (music.paused) {
+                music.play();
+                icon.textContent = '🎵';
+            } else {
+                music.pause();
+                icon.textContent = '🔇';
+            }
+        }
+
+        // Добавляем анимацию sparkle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0% { transform: scale(1); opacity: 1; }
+                100% { transform: scale(3); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Инициализация
+        createUniverse();
+        createFloatingHearts();
+        createCrystals();
+
+        // Автоматические эффекты
+        setInterval(createSparkleEffect, 3000);
+    </script>
+</body>
+</html>
